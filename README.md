@@ -27,7 +27,7 @@ curl --proto '=https' --tlsv1.2 -sSf [https://sh.rustup.rs](https://sh.rustup.rs
 Clone the repository and compile the project using Cargo:
 
 ```bash
-git clone [https://github.com/ibrohim-b/minesweeper-cli.git](https://github.com/ibrohim-b/minesweeper-cli.git)
+git clone https://github.com/ibrohim-b/minesweeper-cli.git
 cd minesweeper-cli
 cargo build --release
 ```
@@ -65,10 +65,10 @@ minesweeper
 
 ### In-Game Controls
 
-  * **Navigation:** Use `Arrow Keys` (or `w/a/s/d` / `h/j/k/l`) to move your cursor across the grid.
+  * **Navigation:** Use `Arrow Keys` (or `w/a/s/d`) to move your cursor across the grid.
   * **Reveal Cell:** Press `Space` or `Enter` to dig/reveal a cell.
   * **Flag Mine:** Press `F` to plant or remove a flag (🚩) on suspected mines.
-  * **Quit:** Press `Q` or `Ctrl+C` to exit the game.
+  * **Quit:** Press `Q` to exit the game.
 
 ## 🤝 Contributing
 

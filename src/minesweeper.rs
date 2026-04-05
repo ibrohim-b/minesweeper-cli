@@ -72,7 +72,13 @@ impl Minesweeper {
 
         if self.first_click {
             self.first_click = false;
-            let excluded = if self.first_click_safe { Some(pos) } else { None };
+            let excluded = if self.first_click_safe {
+                let mut zone: HashSet<Position> = self.iter_neighbors(pos).collect();
+                zone.insert(pos);
+                Some(zone)
+            } else {
+                None
+            };
             self.mines = Self::gen_rand_mines(self.width, self.height, self.mines_count, excluded);
         }
 
@@ -138,11 +144,11 @@ impl Minesweeper {
         self.cursor = pos;
     }
 
-    fn gen_rand_mines(width: usize, height: usize, mines_count: usize, excluded: Option<Position>) -> HashSet<Position> {
+    fn gen_rand_mines(width: usize, height: usize, mines_count: usize, excluded: Option<HashSet<Position>>) -> HashSet<Position> {
         let mut mines = HashSet::new();
         while mines.len() < mines_count {
             let pos = (random_range(0, width), random_range(0, height));
-            if excluded.map_or(true, |e| e != pos) {
+            if excluded.as_ref().map_or(true, |e| !e.contains(&pos)) {
                 mines.insert(pos);
             }
         }

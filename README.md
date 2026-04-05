@@ -87,6 +87,3 @@ This project is licensed under the MIT License - see the `LICENSE` file for deta
 -----
 
 *Developed with ❤️ by [ibrohim-b](https://www.google.com/search?q=https://github.com/ibrohim-b)*
-
-```
-```

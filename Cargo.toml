@@ -1,0 +1,11 @@
+[package]
+name = "minesweeper_2d"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+clearscreen = "4.0.6"
+rand = "0.8"
+crossterm = "0.27"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"

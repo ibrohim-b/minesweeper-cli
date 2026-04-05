@@ -1,0 +1,9 @@
+{
+  "name": "ASCII",
+  "closed":   " # ",
+  "opened":   " . ",
+  "flag":     " F ",
+  "mine":     " * ",
+  "exploded": " X ",
+  "pressed":  " _ "
+}

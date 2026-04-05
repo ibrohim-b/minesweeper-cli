@@ -1,0 +1,9 @@
+{
+  "name": "Emoji",
+  "closed":   "⬛ ",
+  "opened":   "⬜ ",
+  "flag":     "🚩 ",
+  "mine":     "💣 ",
+  "exploded": "💥 ",
+  "pressed":  "🔲 "
+}

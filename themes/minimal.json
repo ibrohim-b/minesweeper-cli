@@ -1,0 +1,9 @@
+{
+  "name": "Minimal",
+  "closed":   " . ",
+  "opened":   "   ",
+  "flag":     " ! ",
+  "mine":     " * ",
+  "exploded": " X ",
+  "pressed":  " , "
+}

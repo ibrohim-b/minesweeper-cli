@@ -58,29 +58,6 @@ minesweeper-cli
   * **Flag Mine:** Press `F` to plant or remove a flag (🚩) on suspected mines.
   * **Quit:** Press `Q` or `Ctrl+C` to exit the game.
 
-### Command Line Options
-
-You can launch the game with specific configurations. Use the `--help` flag to see all available options:
-
-```bash
-minesweeper-cli --help
-```
-
-**Examples:**
-
-  * Play Beginner mode (9x9, 10 mines):
-    ```bash
-    minesweeper-cli --difficulty beginner
-    ```
-  * Play Expert mode (30x16, 99 mines):
-    ```bash
-    minesweeper-cli --difficulty expert
-    ```
-  * Play a custom board (20x20 with 40 mines):
-    ```bash
-    minesweeper-cli --width 20 --height 20 --mines 40
-    ```
-
 ## 🤝 Contributing
 
 Contributions, issues, and feature requests are always welcome\! Feel free to check the [issues page](https://www.google.com/search?q=https://github.com/ibrohim-b/minesweeper-cli/issues) if you want to contribute.

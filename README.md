@@ -19,7 +19,7 @@ To build and run this project from source, you will need to have Rust and Cargo 
 
 If you don't have Rust installed, you can easily get it via [rustup](https://rustup.rs/):
 ```bash
-curl --proto '=https' --tlsv1.2 -sSf [https://sh.rustup.rs](https://sh.rustup.rs) | sh
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ````
 
 ## 🚀 Installation
@@ -72,7 +72,7 @@ minesweeper
 
 ## 🤝 Contributing
 
-Contributions, issues, and feature requests are always welcome\! Feel free to check the [issues page](https://www.google.com/search?q=https://github.com/ibrohim-b/minesweeper-cli/issues) if you want to contribute.
+Contributions, issues, and feature requests are always welcome\! Feel free to check the [issues page](https://github.com/ibrohim-b/minesweeper-cli/issues) if you want to contribute.
 
 1.  Fork the project.
 2.  Create your feature branch (`git checkout -b feature/AmazingFeature`).

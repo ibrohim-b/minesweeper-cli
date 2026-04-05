@@ -3,6 +3,10 @@ name = "minesweeper-cli"
 version = "0.1.0"
 edition = "2024"
 
+[[bin]]
+name = "minesweeper"
+path = "src/main.rs"
+
 [dependencies]
 clearscreen = "4.0.6"
 rand = "0.8"

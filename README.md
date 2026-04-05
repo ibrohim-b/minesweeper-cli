@@ -1,6 +1,3 @@
-Here is a complete, well-structured `README.md` template tailored for a terminal-based Minesweeper game written in Rust. You can copy and paste this directly into your repository.
-
-
 # Minesweeper CLI 💣
 
 [![Rust](https://img.shields.io/badge/Rust-1.70+-orange.svg)](https://www.rust-lang.org/)
@@ -41,12 +38,27 @@ To install the executable globally so you can run it from anywhere, use:
 cargo install --path .
 ```
 
+## ⌨️ Command Installation
+
+After running `cargo install --path .`, the `minesweeper` command is placed in `~/.cargo/bin/`. Make sure that directory is on your `PATH`:
+
+```bash
+export PATH="$HOME/.cargo/bin:$PATH"
+```
+
+Add that line to your shell config (`~/.bashrc`, `~/.zshrc`, etc.) to make it permanent. You can verify the installation with:
+
+```bash
+which minesweeper
+minesweeper --version
+```
+
 ## 🎮 Usage and Controls
 
 Start the game by simply running the executable:
 
 ```bash
-minesweeper-cli
+minesweeper
 ```
 
 *(If you haven't installed it globally, you can just use `cargo run --release` from the project directory).*

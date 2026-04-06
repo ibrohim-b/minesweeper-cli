@@ -10,12 +10,13 @@ pub struct ThemeData {
     pub mine: String,
     pub exploded: String,
     pub pressed: String,
+    pub numbers: [String; 8],
 }
 
 impl ThemeData {
     pub fn render_cell(&self, cell: Cell) -> String {
         match cell {
-            Cell::Num(n)   => format!(" {} ", n),
+            Cell::Num(n)   => self.numbers[n as usize - 1].clone(),
             Cell::Closed   => self.closed.clone(),
             Cell::Opened   => self.opened.clone(),
             Cell::Flag     => self.flag.clone(),

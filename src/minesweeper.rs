@@ -1,7 +1,8 @@
 use crate::utils::cell::{Cell, ThemeData};
 use crate::utils::random::random_range;
-use crossterm::style::{Color, ResetColor, SetBackgroundColor};
+use crossterm::style::{Color, ResetColor, SetBackgroundColor, SetForegroundColor};
 use std::{collections::HashSet, fmt::Display};
+use unicode_width::UnicodeWidthStr;
 
 #[derive(Debug)]
 pub struct Minesweeper {
@@ -22,7 +23,13 @@ pub struct Minesweeper {
 type Position = (usize, usize);
 
 impl Minesweeper {
-    pub fn new(width: usize, height: usize, mines_count: usize, theme: ThemeData, first_click_safe: bool) -> Self {
+    pub fn new(
+        width: usize,
+        height: usize,
+        mines_count: usize,
+        theme: ThemeData,
+        first_click_safe: bool,
+    ) -> Self {
         Self {
             width,
             height,
@@ -149,7 +156,12 @@ impl Minesweeper {
         self.cursor = pos;
     }
 
-    fn gen_rand_mines(width: usize, height: usize, mines_count: usize, excluded: Option<HashSet<Position>>) -> HashSet<Position> {
+    fn gen_rand_mines(
+        width: usize,
+        height: usize,
+        mines_count: usize,
+        excluded: Option<HashSet<Position>>,
+    ) -> HashSet<Position> {
         let mut mines = HashSet::new();
         while mines.len() < mines_count {
             let pos = (random_range(0, width), random_range(0, height));
@@ -225,7 +237,18 @@ impl Minesweeper {
         self.theme.closed.chars().count()
     }
 
+    /// Actual terminal columns occupied by one cell (emojis are 2-wide).
+    pub fn cell_display_width(&self) -> usize {
+        UnicodeWidthStr::width(self.theme.closed.as_str())
+    }
+
+    /// Actual terminal columns occupied by the full board.
+    pub fn board_display_width(&self) -> usize {
+        self.width * self.cell_display_width()
+    }
+
     pub fn render_row(&self, y: usize) -> String {
+        let text_theme = self.cell_display_width() == self.cell_width();
         let mut row = String::new();
         for x in 0..self.width {
             let pos: Position = (x, y);
@@ -249,12 +272,33 @@ impl Minesweeper {
                 let n = self.adjacent_mines_count(pos);
                 if n == 0 { Cell::Opened } else { Cell::Num(n) }
             };
+            if text_theme {
+                if let Cell::Num(n) = cell {
+                    let color = Self::num_color(n);
+                    row.push_str(&format!("{}{}{}", SetForegroundColor(color), self.theme.render_cell(cell), ResetColor));
+                    if is_cursor { row.push_str(&format!("{}", ResetColor)); }
+                    continue;
+                }
+            }
             row.push_str(&self.theme.render_cell(cell));
             if is_cursor {
                 row.push_str(&format!("{}", ResetColor));
             }
         }
         row
+    }
+
+    fn num_color(n: u8) -> Color {
+        match n {
+            1 => Color::Blue,
+            2 => Color::Green,
+            3 => Color::Red,
+            4 => Color::DarkBlue,
+            5 => Color::Rgb { r: 128, g: 0, b: 0 },   // burgundy
+            6 => Color::Cyan,
+            7 => Color::Magenta,                        // violet
+            _ => Color::Grey,
+        }
     }
 }
 

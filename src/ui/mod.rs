@@ -103,6 +103,7 @@ pub fn print_theme_preview(theme: &ThemeData, col: u16, row: u16) {
         ("mine",     &theme.mine),
         ("boom",     &theme.exploded),
         ("press",    &theme.pressed),
+        ("numbers",  &theme.numbers[0]),
     ];
 
     let cell_w = theme.closed.chars().count() as u16;

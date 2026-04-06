@@ -11,7 +11,7 @@ use std::io::{stdout, Write};
 // board_cols = width * cell_width, total_rows = height + 3 (border top + border bot + status)
 fn offsets(ms: &Minesweeper) -> (u16, u16) {
     let (term_cols, term_rows) = size().unwrap_or((80, 24));
-    let board_cols = (ms.width * ms.cell_width()) as u16;
+    let board_cols = ms.board_display_width() as u16;
     let total_rows = (ms.height + 3) as u16;
     let col = term_cols.saturating_sub(board_cols) / 2;
     let row = term_rows.saturating_sub(total_rows) / 2;
@@ -25,13 +25,14 @@ pub fn render(ms: &Minesweeper) {
     let flags = ms.flagged_cells_count();
     let mines = ms.mines_count();
 
-    let board_cols = ms.width * ms.cell_width();
+    let board_cols = ms.board_display_width();
     // inner width between the corner chars
     let inner = board_cols.saturating_sub(2);
     let label = " MINESWEEPER ";
     // pad label with '═' on both sides to fill inner width
     let label_len = label.chars().count();
     let total_pad = inner.saturating_sub(label_len);
+    
     let pad_left  = total_pad / 2;
     let pad_right = total_pad - pad_left;
     let top = format!("╔{}{}{}╗", "═".repeat(pad_left), label, "═".repeat(pad_right));
@@ -86,6 +87,7 @@ pub fn play(width: usize, height: usize, mines: usize, settings: &Settings, them
         name: "Fallback".to_string(),
         closed: " # ".to_string(), opened: " . ".to_string(), flag: " F ".to_string(),
         mine: " * ".to_string(), exploded: " X ".to_string(), pressed: " _ ".to_string(),
+        numbers: [" 1 "," 2 "," 3 "," 4 "," 5 "," 6 "," 7 "," 8 "].map(String::from),
     });
     let mut ms = Minesweeper::new(width, height, mines, theme, settings.first_click_safe);
     clear();

@@ -1,9 +1,0 @@
-{
-  "name": "Icons",
-  "flag":     " ⚑ ",
-  "mine":     " ☠ ",
-  "pressed":  "   ",
-  "closed":   " ▓ ",
-  "opened":   " ░ ",
-  "exploded": " ✸ "
-}

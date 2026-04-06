@@ -107,7 +107,12 @@ impl Minesweeper {
         }
 
         if adj_mines == 0 {
-            self.open_closed_neighbors(pos);
+            let neighbors: Vec<Position> = self.iter_neighbors(pos).collect();
+            for neighbor in neighbors {
+                if !self.open_cells.contains(&neighbor) && !self.flagged_cells.contains(&neighbor) {
+                    self.flood_fill(neighbor);
+                }
+            }
         }
     }
 
@@ -156,10 +161,25 @@ impl Minesweeper {
     }
 
     fn open_closed_neighbors(&mut self, pos: Position) {
-        for neighbor in self.iter_neighbors(pos) {
-            if !self.open_cells.contains(&neighbor) {
-                self.open(neighbor);
+        let neighbors: Vec<Position> = self.iter_neighbors(pos).collect();
+        for neighbor in neighbors {
+            if !self.open_cells.contains(&neighbor) && !self.flagged_cells.contains(&neighbor) {
+                self.flood_fill(neighbor);
             }
+        }
+    }
+
+    fn flood_fill(&mut self, pos: Position) {
+        if self.open_cells.contains(&pos) || self.flagged_cells.contains(&pos) {
+            return;
+        }
+        self.open_cells.insert(pos);
+        if self.mines.contains(&pos) {
+            self.game_over = true;
+            return;
+        }
+        if self.adjacent_mines_count(pos) == 0 {
+            self.open_closed_neighbors(pos);
         }
     }
 

@@ -2,7 +2,7 @@ use crate::minesweeper::Minesweeper;
 use crate::ui::clear;
 use crate::utils::cell::ThemeData;
 use crate::Settings;
-use crossterm::event::{self, Event, KeyCode};
+use crossterm::event::{self, Event, KeyCode, KeyEvent, KeyModifiers};
 use crossterm::style::{Color, Print, ResetColor, SetForegroundColor};
 use crossterm::terminal::size;
 use crossterm::{cursor, execute};
@@ -97,15 +97,20 @@ pub fn play(width: usize, height: usize, mines: usize, settings: &Settings, them
         if event::poll(std::time::Duration::from_millis(100)).unwrap() {
             match event::read().unwrap() {
                 Event::Key(key) => {
-                    match key.code {
-                        KeyCode::Up    | KeyCode::Char('w') => ms.move_cursor(0, -1),
-                        KeyCode::Down  | KeyCode::Char('s') => ms.move_cursor(0, 1),
-                        KeyCode::Left  | KeyCode::Char('a') => ms.move_cursor(-1, 0),
-                        KeyCode::Right | KeyCode::Char('d') => ms.move_cursor(1, 0),
-                        KeyCode::Enter | KeyCode::Char(' ') => ms.open(ms.cursor),
-                        KeyCode::Char('f') | KeyCode::Char('F') => ms.toggle_flag(ms.cursor),
-                        KeyCode::Char('r') | KeyCode::Char('R') => { ms.reset(); clear(); },
-                        KeyCode::Char('q') | KeyCode::Char('Q') | KeyCode::Esc => return true,
+                    let ctrl = key.modifiers.contains(KeyModifiers::CONTROL);
+                    match key {
+                        KeyEvent { code: KeyCode::Up,    modifiers, .. } if modifiers.intersects(KeyModifiers::CONTROL | KeyModifiers::SUPER) => ms.move_cursor_to_position((ms.cursor.0, 0)),
+                        KeyEvent { code: KeyCode::Down,  modifiers, .. } if modifiers.intersects(KeyModifiers::CONTROL | KeyModifiers::SUPER) => ms.move_cursor_to_position((ms.cursor.0, ms.height - 1)),
+                        KeyEvent { code: KeyCode::Left,  modifiers, .. } if modifiers.intersects(KeyModifiers::CONTROL | KeyModifiers::SUPER) => ms.move_cursor_to_position((0, ms.cursor.1)),
+                        KeyEvent { code: KeyCode::Right, modifiers, .. } if modifiers.intersects(KeyModifiers::CONTROL | KeyModifiers::SUPER) => ms.move_cursor_to_position((ms.width - 1, ms.cursor.1)),
+                        KeyEvent { code: KeyCode::Up    | KeyCode::Char('w'), .. } | KeyEvent { code: KeyCode::Char('k'), .. } if !ctrl => ms.move_cursor(0, -1),
+                        KeyEvent { code: KeyCode::Down  | KeyCode::Char('s'), .. } | KeyEvent { code: KeyCode::Char('j'), .. } if !ctrl => ms.move_cursor(0, 1),
+                        KeyEvent { code: KeyCode::Left  | KeyCode::Char('a'), .. } | KeyEvent { code: KeyCode::Char('h'), .. } if !ctrl => ms.move_cursor(-1, 0),
+                        KeyEvent { code: KeyCode::Right | KeyCode::Char('d'), .. } | KeyEvent { code: KeyCode::Char('l'), .. } if !ctrl => ms.move_cursor(1, 0),
+                        KeyEvent { code: KeyCode::Enter | KeyCode::Char(' '), .. } => ms.open(ms.cursor),
+                        KeyEvent { code: KeyCode::Char('f') | KeyCode::Char('F'), .. } => ms.toggle_flag(ms.cursor),
+                        KeyEvent { code: KeyCode::Char('r') | KeyCode::Char('R'), .. } => { ms.reset(); clear(); },
+                        KeyEvent { code: KeyCode::Char('q') | KeyCode::Char('Q') | KeyCode::Esc, .. } => return true,
                         _ => {}
                     }
                     render(&ms);

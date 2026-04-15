@@ -51,9 +51,9 @@ pub fn main_menu() -> Option<&'static str> {
     }
 }
 
-pub fn difficulty_menu() -> Option<(usize, usize, usize)> {
+pub fn difficulty_menu(default: usize) -> Option<(usize, usize, usize, usize)> {
     let labels: Vec<&str> = DIFFICULTIES.iter().map(|d| d.label).collect();
-    let mut sel = 0usize;
+    let mut sel = default.min(DIFFICULTIES.len() - 1);
     let mut redraw = true;
     loop {
         if redraw { print_menu(&labels, sel, "Select Difficulty"); redraw = false; }
@@ -63,8 +63,10 @@ pub fn difficulty_menu() -> Option<(usize, usize, usize)> {
                 KeyCode::Down | KeyCode::Char('s') => { sel = (sel + 1).min(DIFFICULTIES.len() - 1); redraw = true; }
                 KeyCode::Enter => {
                     let d = &DIFFICULTIES[sel];
-                    if d.label == "Custom" { return custom_input(); }
-                    return Some((d.width, d.height, d.mines));
+                    if d.label == "Custom" {
+                        return custom_input().map(|(w, h, m)| (sel, w, h, m));
+                    }
+                    return Some((sel, d.width, d.height, d.mines));
                 }
                 KeyCode::Char('q') | KeyCode::Esc => return None,
                 _ => {}
